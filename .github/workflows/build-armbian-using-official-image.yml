@@ -16,7 +16,7 @@ on:
       armbian_board:
         description: "Select device board."
         required: false
-        default: "all"
+        default: "rk3568-wocyber"
         type: choice
         options:
           - all
@@ -159,6 +159,7 @@ on:
           - sw799
           - tanix-tx6
           - tb-ls3399
+          - rk3568-wocyber
           - tn3399
           - tpm312
           - tqc-a01
