@@ -4,7 +4,7 @@ fdtfile=rockchip/rk3588s-stationpc-m3.dtb
 rootdev=/dev/mmcblk0p2
 rootfstype=ext4
 rootflags=rw,errors=remount-ro
-overlay_prefix=rk3588s
+overlay_prefix=rk3588
 overlays=
 extraargs=rw rootwait
 extraboardargs=net.ifnames=0 max_loop=128
