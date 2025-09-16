@@ -59,22 +59,6 @@ on:
         options:
           - all
           - dtbs
-      kernel_patch:
-        description: "Set kernel_patch"
-        required: false
-        default: "false"
-        type: choice
-        options:
-          - false
-          - true      
-      auto_patch:
-        description: "Set auto_patch"
-        required: false
-        default: "false"
-        type: choice
-        options:
-          - false
-          - true
       kernel_toolchain:
         description: "Select the compilation toolchain"
         required: false
@@ -170,7 +154,7 @@ jobs:
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
-        uses: arthur97172/amlogic-s9xxx-armbian@main
+        uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.mapped.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: kernel
@@ -180,8 +164,6 @@ jobs:
           delete_source: ${{ inputs.delete_source }}
           kernel_package: ${{ inputs.kernel_package }}
           kernel_sign: ${{ inputs.kernel_sign }}
-          kernel_patch: ${{ inputs.kernel_patch }}
-          auto_patch: ${{ inputs.auto_patch }}
           kernel_toolchain: ${{ inputs.kernel_toolchain }}
           compress_format: ${{ inputs.compress_format }}
           silent_log: ${{ inputs.silent_log }}
