@@ -153,6 +153,7 @@ jobs:
           ln -sf /builder/output /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/compile-kernel/output
           echo "status=success" >> ${GITHUB_OUTPUT}
 
+#for OES Plus asm1064 only
       - name: Verify user patch
         run: |
           PATCH_DIR="./compile-kernel/kernel/userpatches/kernel/meson64-6.12"
@@ -166,7 +167,7 @@ jobs:
             echo "❌ Patch ${PATCH_FILE} not found!"
             exit 1
           fi
-
+#for OES Plus asm1064 only
       - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
         uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.mapped.outputs.status }} == 'success' && !cancelled()
