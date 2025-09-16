@@ -1,0 +1,15 @@
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -743,6 +743,12 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+        { PCI_VDEVICE(INTEL, 0x7ae2), board_ahci }, /* Cannon Point */
+
+        /* ASMedia */
++       /*
++        * Force bind ASM1064 with subsystem 2116 (some boards ship with
++        * non-standard subsystem IDs that ahci normally ignores)
++        */
++       { PCI_VDEVICE(ASMEDIA, 0x1064), board_ahci },
++
+        { }     /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci, ahci_pci_tbl);
