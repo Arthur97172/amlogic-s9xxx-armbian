@@ -153,6 +153,20 @@ jobs:
           ln -sf /builder/output /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/compile-kernel/output
           echo "status=success" >> ${GITHUB_OUTPUT}
 
+      - name: Verify user patch
+        run: |
+          PATCH_DIR="./compile-kernel/kernel/userpatches/kernel/meson64-6.12"
+          PATCH_FILE="0001-ahci-ignore-ssid-asm1064.patch"
+          echo "Checking if patch exists in ${PATCH_DIR}..."
+          if [ -f "${PATCH_DIR}/${PATCH_FILE}" ]; then
+            echo "✅ Patch found: ${PATCH_FILE}"
+            echo "Listing all patches in directory:"
+            ls -lh "${PATCH_DIR}"
+          else
+            echo "❌ Patch ${PATCH_FILE} not found!"
+            exit 1
+          fi
+
       - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
         uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.mapped.outputs.status }} == 'success' && !cancelled()
