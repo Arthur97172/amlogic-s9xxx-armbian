@@ -71,6 +71,7 @@ all_kernel=("5.4.y" "5.10.y" "5.15.y" "6.1.y" "6.6.y" "6.12.y")
 auto_kernel="true"
 # Set whether to apply custom kernel patches, options: [ true / false ]
 auto_patch="false"
+kernel_patch ="false"
 # Set custom signature for the kernel
 custom_name="-ophub"
 # Set the kernel compile object, options: [ dtbs / all ]
