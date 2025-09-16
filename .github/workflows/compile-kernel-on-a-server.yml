@@ -180,6 +180,8 @@ jobs:
           delete_source: ${{ inputs.delete_source }}
           kernel_package: ${{ inputs.kernel_package }}
           kernel_sign: ${{ inputs.kernel_sign }}
+          kernel_patch: ${{ inputs.kernel_patch }}
+          auto_patch: ${{ inputs.auto_patch }}
           kernel_toolchain: ${{ inputs.kernel_toolchain }}
           compress_format: ${{ inputs.compress_format }}
           silent_log: ${{ inputs.silent_log }}
