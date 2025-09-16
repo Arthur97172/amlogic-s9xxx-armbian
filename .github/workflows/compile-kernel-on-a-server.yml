@@ -59,6 +59,20 @@ on:
         options:
           - all
           - dtbs
+      kernel_patch:
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - false
+          - true      
+      auto_patch:
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - false
+          - true
       kernel_toolchain:
         description: "Select the compilation toolchain"
         required: false
