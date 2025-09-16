@@ -364,6 +364,10 @@ jobs:
           kernel_usage: ${{ inputs.kernel_usage }}
           armbian_fstype: ${{ inputs.armbian_fstype }}
           builder_name: ${{ inputs.builder_name }}
+          ### OES-PLUS patch
+          kernel_patch: userpatches/kernel/meson64-edge/s922x-oes-plus
+          auto_patch: true
+
 
       - name: Upload Rebuild image to Release
         uses: ncipollo/release-action@main
