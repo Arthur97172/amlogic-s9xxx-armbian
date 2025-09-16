@@ -1,9 +1,9 @@
 #==========================================================================
-# Description: Build Armbian server image
+# Description: Build OES-PLUS Armbian server image
 # Copyright (C) 2021 https://github.com/ophub/amlogic-s9xxx-armbian
 #==========================================================================
 
-name: Build Armbian server image
+name: Build OES-PLUS Armbian server image
 
 on:
   repository_dispatch:
