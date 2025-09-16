@@ -154,19 +154,19 @@ jobs:
           echo "status=success" >> ${GITHUB_OUTPUT}
 
 #====================for OES Plus asm1064 only=====================
-      - name: Verify user patch
-        run: |
-          PATCH_DIR="./compile-kernel/tools/config/config-6.12"
-          PATCH_FILE="0001-ahci-ignore-ssid-asm1064.patch"
-          echo "Checking if patch exists in ${PATCH_DIR}..."
-          if [ -f "${PATCH_DIR}/${PATCH_FILE}" ]; then
-            echo "✅ Patch found: ${PATCH_FILE}"
-            echo "Listing all patches in directory:"
-            ls -lh "${PATCH_DIR}"
-          else
-            echo "❌ Patch ${PATCH_FILE} not found!"
-            exit 1
-          fi
+- name: Verify patch
+  run: |
+    PATCH_DIR="${{ github.workspace }}/compile-kernel/tools/config/config-6.12"
+    PATCH_FILE="0001-ahci-ignore-ssid-asm1064.patch"
+    echo "Checking if patch exists in ${PATCH_DIR}..."
+    if [ -f "${PATCH_DIR}/${PATCH_FILE}" ]; then
+      echo "✅ Patch found: ${PATCH_FILE}"
+      echo "Listing all patches in directory:"
+      ls -lh "${PATCH_DIR}"
+    else
+      echo "❌ Patch ${PATCH_FILE} not found!"
+      exit 1
+    fi
 #====================for OES Plus asm1064 only=====================
 
       - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
