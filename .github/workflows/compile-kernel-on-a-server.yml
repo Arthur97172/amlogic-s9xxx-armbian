@@ -60,6 +60,7 @@ on:
           - all
           - dtbs
       kernel_patch:
+        description: "Set kernel_patch"
         required: false
         default: "false"
         type: choice
@@ -67,6 +68,7 @@ on:
           - false
           - true      
       auto_patch:
+        description: "Set auto_patch"
         required: false
         default: "false"
         type: choice
