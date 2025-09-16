@@ -156,7 +156,7 @@ jobs:
 #====================for OES Plus asm1064 only=====================
       - name: Verify user patch
         run: |
-          PATCH_DIR="./compile-kernel/kernel/userpatches/kernel/meson64-6.12"
+          PATCH_DIR="./compile-kernel/tools/config/config-6.12"
           PATCH_FILE="0001-ahci-ignore-ssid-asm1064.patch"
           echo "Checking if patch exists in ${PATCH_DIR}..."
           if [ -f "${PATCH_DIR}/${PATCH_FILE}" ]; then
