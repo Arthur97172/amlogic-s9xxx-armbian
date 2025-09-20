@@ -167,7 +167,7 @@ jobs:
           kernel_toolchain: ${{ inputs.kernel_toolchain }}
           compress_format: ${{ inputs.compress_format }}
           silent_log: ${{ inputs.silent_log }}
-          kernel_patch: compile-kernel/tools/patch/linux-6.12.y
+          kernel_patch: compile-kernel/tools/patch/linux-6.12.y/
           auto_patch: true
 
       - name: Upload Kernel to Release
