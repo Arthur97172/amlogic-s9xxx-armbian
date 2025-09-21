@@ -87,11 +87,11 @@ on:
       builder_name:
         description: "Set Armbian builder signature."
         required: false
-        default: "ophub"
+        default: "arthur97172"
         type: choice
         options:
           - ophub
-          - angel
+          - arthur97172
 
 env:
   TZ: Etc/UTC
