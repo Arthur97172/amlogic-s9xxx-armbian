@@ -194,7 +194,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Rebuild Armbian
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: arthur97172/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: armbian
@@ -206,10 +206,6 @@ jobs:
           kernel_usage: ${{ inputs.kernel_usage }}
           armbian_fstype: ${{ inputs.armbian_fstype }}
           builder_name: ${{ inputs.builder_name }}
-          ### OES-PLUS patch
-          kernel_patch: amlogic-s9xxx-armbian@main/userpatches/kernel/meson64-edge/s922x-oes-plus
-          auto_patch: true
-
 
       - name: Upload Rebuild image to Release
         uses: ncipollo/release-action@main
