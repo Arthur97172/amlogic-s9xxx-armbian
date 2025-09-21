@@ -54,7 +54,7 @@ on:
       kernel_repo:
         description: "Set the kernel repository."
         required: false
-        default: "arthur97172/kernel"
+        default: "ophub/kernel"
         type: choice
         options:
           - ophub/kernel
