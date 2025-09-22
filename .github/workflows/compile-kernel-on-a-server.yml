@@ -24,18 +24,7 @@ on:
         default: "6.12.y"
         type: choice
         options:
-          - 5.4.y
-          - 5.10.y
-          - 5.15.y
-          - 6.1.y
-          - 6.6.y
           - 6.12.y
-          - 5.4.y_5.10.y
-          - 5.15.y_6.1.y
-          - 6.6.y_6.12.y
-          - 5.4.y_5.10.y_5.15.y
-          - 6.1.y_6.6.y_6.12.y
-          - all
       kernel_auto:
         description: "Auto use the latest kernel"
         required: false
@@ -72,7 +61,7 @@ on:
       compress_format:
         description: "Set the initrd compression format"
         required: false
-        default: "xz"
+        default: "gzip"
         type: choice
         options:
           - xz
@@ -88,7 +77,15 @@ on:
           - -ophub
           - -arthur97172
           - -yourname
-
+      kernel_config:
+        description: "Set the path of kernel .config"
+        required: false
+        default: "kernel-config/release/amlogic"
+        type: choice
+        options:
+          - kernel-config/release/amlogic
+          - false
+          
 env:
   TZ: Etc/UTC
 
