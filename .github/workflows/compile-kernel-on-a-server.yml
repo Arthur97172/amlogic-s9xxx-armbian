@@ -80,10 +80,10 @@ on:
       kernel_config:
         description: "Set the path of kernel .config"
         required: false
-        default: "compile-kernel/tools/config"
+        default: "kernel-config/release/amlogic"
         type: choice
         options:
-          - compile-kernel/tools/config
+          - kernel-config/release/amlogic
           - false
           
 env:
