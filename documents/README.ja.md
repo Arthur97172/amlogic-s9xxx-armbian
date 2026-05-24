@@ -208,7 +208,7 @@ GitHub Actions のデフォルトコンパイル領域は 84G で、システム
     sudo mkfs.xfs /dev/github/runner
     sudo mkdir -p /builder
     sudo mount /dev/github/runner /builder
-    sudo chown -R runner.runner /builder
+    sudo chown -R runner:runner /builder
     df -Th
 ```
 
@@ -222,13 +222,13 @@ Armbian システムの [Docker](https://hub.docker.com/u/ophub) イメージの
 
 ```yaml
 - name: Upload Armbian image to Release
-  uses: ncipollo/release-action@main
+  uses: ophub/upload-to-release@main
   if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
   with:
     tag: Armbian_${{ env.ARMBIAN_RELEASE }}_${{ env.PACKAGED_OUTPUTDATE }}
     artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
-    allowUpdates: true
-    token: ${{ secrets.GITHUB_TOKEN }}
+    allow_updates: true
+    gh_token: ${{ secrets.GITHUB_TOKEN }}
     body: |
       These are the Armbian OS image
       * OS information
@@ -581,7 +581,7 @@ armbian-update
 | オプションパラメータ  | デフォルト値        | 選択肢           | 説明                              |
 | -------- | ------------ | ------------- | -------------------------------- |
 | -r       | ophub/kernel | `<owner>/<repo>` | github.com からカーネルをダウンロードするリポジトリを設定  |
-| -u       | 自動        | stable/flippy/beta/rk3588/rk35xx/h6 | 使用するカーネルの [tags サフィックス](https://github.com/ophub/kernel/releases) を設定 |
+| -u       | 自動        | stable/flippy/beta/rk3588/rk35xx | 使用するカーネルの [tags サフィックス](https://github.com/ophub/kernel/releases) を設定 |
 | -k       | 最新版        | カーネルバージョン       | [カーネルバージョン](https://github.com/ophub/kernel/releases/tag/kernel_stable) を設定  |
 | -b       | yes          | yes/no        | カーネル更新時に現在使用中のカーネルを自動バックアップ    |
 | -d       | deb          | tar/deb       | 優先使用するカーネルパッケージ形式を設定。指定形式が存在しない場合、スクリプトは自動的に別の形式を試行します。カスタムドライバをコンパイルする場合は `deb` 形式を推奨。 |
@@ -1503,11 +1503,15 @@ Amlogic デバイスは `/boot/uEnv.txt` ファイルで設定します。Rockch
 
 - 例えば `Home Assistant Supervisor` は `docker cgroup v1` のみをサポートしていますが、現在の docker はデフォルトで v2 バージョンをインストールします。v1 に切り替える場合は、cmdline に `systemd.unified_cgroup_hierarchy=0` パラメータを追加し、再起動すると `docker cgroup v1` に切り替わります。
 
+- cmdline に `mmc_core.max_freq=50000000` 設定を追加することで、eMMC の最大周波数を `50MHz` に制限できます。一部の S905L2 ボックスでは、高周波（HS200/HS400、100MHz以上）において eMMC が不安定になることがありますが、周波数を下げることで、起動失敗やランダムなクラッシュ、読み書きエラー、不安定性などの問題を解決できます。
+
 - cmdline に `max_loop=128` 設定を追加することで、許可される loop マウント数を調整できます。
 
 - cmdline に `usbcore.usbfs_memory_mb=1024` 設定を追加することで、USBFS メモリバッファをデフォルトの `16 mb` からより大きなサイズに永続的に変更できます（`cat /sys/module/usbcore/parameters/usbfs_memory_mb`）。USB での大容量ファイル転送能力を向上させます。
 
 - cmdline に `usbcore.usb3_disable=1` 設定を追加することで、すべての USB 3.0 デバイスを無効にできます。
+
+- cmdline に `usbcore.autosuspend=-1` 設定を追加することで、USB オートサスペンドを無効にできます（USB デバイスの省電力による切断を防止）；`rootdelay=120` 設定を追加することで、起動時にルートパーティションをマウントする前に 120 秒待機します（USB デバイスが準備完了するまでの時間を確保）；`mitigations=off` 設定を追加することで、CPU 脆弱性の緩和策（Spectre/Meltdown）を無効にし、パフォーマンスを向上させます。
 
 - cmdline に `extraargs=video=HDMI-A-1:1920x1080@60` 設定を追加することで、ビデオ表示モードを 1080p に強制できます。
 
@@ -1666,7 +1670,7 @@ max-frequency = <208000000>;
 };
 ```
 
-通常、`&sd_emmc_c` の周波数を `max-frequency = <200000000>;` から `max-frequency = <100000000>;` に下げれば解決します。効果がない場合は `50000000` にさらに下げてテストし、同時に `&sd_emmc_b` の設定で `USB/SD/TF` を調整するか、`sd-uhs-sdr` で速度制限することもできます。dts ファイルを修正して [コンパイル](https://github.com/ophub/amlogic-s9xxx-armbian/tree/main/compile-kernel) してテストファイルを生成するか、`12.13 節` の方法で既存の dtb ファイルを逆コンパイルして修正できます。dtb ファイルの逆コンパイル時は十六進数値を使用します。十進数の `200000000` に対応する十六進数は `0xbebc200`、十進数の `100000000` に対応する十六進数は `0x5f5e100`、十進数の `50000000` に対応する十六進数は `0x2faf080`、十進数の `25000000` に対応する十六進数は `0x17d7840` です。
+通常、`&sd_emmc_c` の周波数を `max-frequency = <200000000>;` から `max-frequency = <100000000>;` に下げれば解決します。効果がない場合は `50000000` にさらに下げてテストし、同時に `&sd_emmc_b` の設定で `USB/SD/TF` を調整するか、`sd-uhs-sdr` で速度制限することもできます。dts ファイルを修正して [コンパイル](https://github.com/ophub/amlogic-s9xxx-armbian/tree/main/compile-kernel) してテストファイルを生成するか、`12.13 節` の方法で既存の dtb ファイルを逆コンパイルして修正できます。dtb ファイルの逆コンパイル時は十六進数値を使用します。十進数の `200000000` に対応する十六進数は `0xbebc200`、十進数の `100000000` に対応する十六進数は `0x5f5e100`、十進数の `50000000` に対応する十六進数は `0x2faf080`、十進数の `25000000` に対応する十六進数は `0x17d7840` です。また、`12.14 節` の cmdline 設定方法を参照し、cmdline に `mmc_core.max_freq=50000000` パラメータを追加して eMMC の最大周波数を制限することで、読み書きエラーや不安定な問題を解決することも可能です。
 
 ソフトウェア面の最適化の他に、[ハードウェアアップグレード](https://github.com/ophub/amlogic-s9xxx-armbian/issues/998) や [手動改造](https://www.right.com.cn/forum/thread-901586-1-1.html) で解決することもできます。
 
